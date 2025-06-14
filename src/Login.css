@@ -1,0 +1,116 @@
+body {
+  background-color: #fffada;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-mainbody {
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.login-box {
+    background-color: white;
+    width: 50%;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    margin-left: 100%;
+
+}
+
+.login-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.login-SU {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.login-mainline {
+  font-size: larger;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  width: 90%;
+  height: 35px;
+  background-color: white;
+  border-radius: 7px;
+  font-family: inherit;
+  border: 2px double burlywood;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.login-last {
+  padding-top: 4%;
+  text-align: center;
+}
+
+.login-LB {
+  width: 40%;
+  background-color: #2832C2;
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-LB:hover {
+  opacity: 0.8;
+}
+
+.login-LB:active {
+  background-color: blue;
+}
+
+.login-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+.login-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.login-eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+}
+
+.login-register-link {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+}

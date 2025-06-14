@@ -1,0 +1,91 @@
+body {
+    background-color: #fffada;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-mainbody {
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.register-box {
+    background-color: white;
+    width: 50%;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.register-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.register-SU {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.register-mainline {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 6px;
+}
+
+.register-box input[type="text"],
+.register-box input[type="email"],
+.register-box input[type="password"] {
+    width: 100%;
+    height: 38px;
+    background-color: white;
+    border-radius: 7px;
+    font-family: inherit;
+    border: 2px solid burlywood;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    color: black;
+}
+
+.register-error {
+    color: red;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.register-last {
+    padding-top: 5%;
+    text-align: center;
+}
+
+.register-LB {
+    width: 50%;
+    background-color: #2832C2;
+    height: 38px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-LB:hover {
+    opacity: 0.85;
+}
+
+.register-LB:active {
+    background-color: blue;
+}
