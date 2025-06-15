@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
-import './Register.css'; // Your original CSS
-import logo from './images/logo.png'; // Your original logo
+import './Register.css'; 
+import logo from './images/logo.png'; 
 
 function Register() {
   const navigate = useNavigate();
@@ -17,7 +17,6 @@ function Register() {
 
   const [users, setUsers] = useState([]);
 
-  // Load stored users from localStorage
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('users'));
     if (Array.isArray(stored)) {
@@ -95,7 +94,7 @@ const onSubmit = (data) => {
         </form>
       </div>
 
-      {/* DataTable Below the Form */}
+      {/* DataTable */}
       <div style={{ marginTop: '40px', width: '90%' }}>
         <DataTable
           title="Registered Users"
