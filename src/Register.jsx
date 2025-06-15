@@ -1,8 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import './Register.css'; // Make sure the CSS file uses updated classNames
-import logo from './images/logo.png';
+import DataTable from 'react-data-table-component';
+import { useNavigate } from 'react-router-dom';
+import './Register.css'; // Your original CSS
+import logo from './images/logo.png'; // Your original logo
 
 function Register() {
   const navigate = useNavigate();
@@ -10,13 +11,37 @@ function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Submit data to backend or handle it here
-    navigate('/'); // Redirect to homepage or login page
-  };
+  const [users, setUsers] = useState([]);
+
+  // Load stored users from localStorage
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem('users'));
+    if (Array.isArray(stored)) {
+      setUsers(stored);
+    }
+  }, []);
+
+const onSubmit = (data) => {
+  const updatedUsers = [...users, data];
+  setUsers(updatedUsers);
+  localStorage.setItem('users', JSON.stringify(updatedUsers));
+  alert('Registered successfully');
+  reset();
+
+  setTimeout(() => {
+    navigate('/login');
+  }, 1000);
+};
+
+  const columns = [
+    { name: 'Name', selector: row => row.name, sortable: true },
+    { name: 'Email', selector: row => row.email, sortable: true },
+    { name: 'Password', selector: row => '*'.repeat(row.password.length) },
+  ];
 
   return (
     <div className="register-mainbody">
@@ -59,6 +84,8 @@ function Register() {
             placeholder="Confirm Password"
             {...register('confirmPassword', {
               required: 'Confirm Password is required',
+              validate: (value) =>
+                value === watch('password') || 'Passwords do not match',
             })}
           />
 
@@ -66,6 +93,16 @@ function Register() {
             <button type="submit" className="register-LB">Register</button>
           </div>
         </form>
+      </div>
+
+      {/* DataTable Below the Form */}
+      <div style={{ marginTop: '40px', width: '90%' }}>
+        <DataTable
+          title="Registered Users"
+          columns={columns}
+          data={Array.isArray(users) ? users : []}
+          pagination
+        />
       </div>
     </div>
   );

@@ -16,8 +16,21 @@ function Login() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log('Form Data:', data);
-    navigate('/'); // Redirect on successful login
+    const storedUser= JSON.parse(localStorage.getItem("users") || "{}")
+
+    console.log(data);
+    console.log(storedUser);
+
+    if(
+      data.email === storedUser.email &&
+      data.password === storedUser.password
+    ){
+      alert("Login successfull");
+      navigate('/')
+    }else{
+      alert("Invalid credentials")
+    }
+   
   };
 
   const togglePasswordVisibility = () => {
