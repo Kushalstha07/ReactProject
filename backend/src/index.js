@@ -22,7 +22,7 @@ app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/file", router);
 createUploadsFolder();
-app.listen(3000, function () {
-  console.log("project running in port ", port);
-  db();
+app.listen(port, function () {
+  console.log("Project running on port", port);
 });
+
