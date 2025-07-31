@@ -1,0 +1,126 @@
+.mainbody {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fffada 0%, #f8f9fa 100%);
+    padding: 40px 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.major {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.first {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+}
+
+.first h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
+
+.first .subtitle {
+    font-size: 1.5rem;
+    color: blueviolet;
+    margin-bottom: 20px;
+}
+
+.first .description {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.contact-image {
+    flex: 1;
+    text-align: center;
+    min-width: 300px;
+}
+
+.contact-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.mid {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.contact-info-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.contact-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.middle, .middle1, .middle2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    border-left: 4px solid blueviolet;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.middle:hover, .middle1:hover, .middle2:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(138, 43, 226, 0.2);
+}
+
+.middle p, .middle1 p, .middle2 p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .major {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .first h1 {
+        font-size: 2rem;
+    }
+    
+    .first .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .contact-methods {
+        grid-template-columns: 1fr;
+    }
+    
+    .mid {
+        padding: 20px;
+        margin: 20px;
+    }
+}

@@ -4,13 +4,15 @@ dotenv.config();
 
 // Middleware to verify JWT token
 export function authenticateToken(req, res, next) {
-  // Skip token verification for the login route
-  if (req.path === "/api/auth/login" || req.path === "/api/auth/register" || (req.path === "/api/users")) {
+  // Skip token verification for public routes
+  if (req.path === "/api/auth/login" || req.path === "/api/auth/register" || 
+      (req.path === "/api/users" && req.method === "POST")) {
     return next();
   }
 
   // Get token from Authorization header
-  const token = req.header("Authorization")?.split(" ")[1];
+  const authHeader = req.header("Authorization");
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
     return res
@@ -18,11 +20,12 @@ export function authenticateToken(req, res, next) {
       .send({ message: "Access denied. No token provided." });
   }
 
-  jwt.verify(token, process.env.secretkey, (err, decoded) => {
-    if (err) {
-      return res.status(403).send("Invalid or expired token.");
-    }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || process.env.secretkey);
     req.user = decoded; // Attach decoded payload to request object
     next(); // Proceed to the next middleware or route handler
-  });
+  } catch (err) {
+    console.error('Token verification error:', err);
+    return res.status(403).send({ message: "Invalid or expired token." });
+  }
 }

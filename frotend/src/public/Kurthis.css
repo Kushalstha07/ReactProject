@@ -1,0 +1,45 @@
+.mainbody {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+.dresshead{
+    color: black;
+    padding-left: 45%;
+    font-weight: bold;
+    font-size: 25px;
+}
+.topimage{
+    display: flex;
+    justify-content: space-between;
+    gap: 7%;
+    font-weight: bold;
+}
+.price0{
+    display: flex;
+    gap: 22%;
+    font-size: larger;
+    
+}
+.middleimage{
+    display: flex;
+    justify-content: space-between;
+    gap: 7%;
+    font-weight: bold;
+    padding-top: 3%;
+}
+.buttonimage{
+    display: flex;
+    justify-content: space-between;
+    gap: 7%;
+    font-weight: bold;
+    padding-top: 3%;
+}
+.lastimage{
+    display: flex;
+    justify-content: space-between;
+    gap: 7%;
+    font-weight: bold;
+    padding-top: 3%;
+}

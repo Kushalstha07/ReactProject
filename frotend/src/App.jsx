@@ -1,16 +1,20 @@
 import React from 'react'; 
-import { Routes, Route } from 'react-router-dom'; 
-import Homepage from './public/Home'; 
-import Login from './public/Login'; 
-import Register from './public/Register'; 
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import UserRoutes from './routes/UserRoutes'
+import './App.css'
  
 function App() { 
   return ( 
-    <Routes> 
-      <Route path="/" element={<Homepage />} /> 
-      <Route path="/login" element={<Login />} /> 
-      <Route path="/register" element={<Register />} /> 
-    </Routes> 
+    <div className="App">
+      <ScrollToTop />
+      <Header />
+      <main className="main-content">
+        <UserRoutes />
+      </main>
+      <Footer />
+    </div>
   ); 
 } 
  
