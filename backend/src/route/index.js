@@ -1,2 +1,6 @@
 export * from './user/userRoute.js'
 export * from './auth/authRoute.js'
+export * from './product/productRoute.js'
+export * from './order/orderRoute.js'
+export * from './admin/adminRoute.js'
+export * from './cart/cartRoute.js'
