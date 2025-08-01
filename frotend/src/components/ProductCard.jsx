@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { FaShoppingCart, FaHeart, FaStar } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart } from 'react-icons/fa';
 import './ProductCard.css';
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, onQuickView }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState(product.size || 'M');
   const [quantity, setQuantity] = useState(1);
@@ -29,15 +29,23 @@ const ProductCard = ({ product, onAddToCart }) => {
     >
       <div className="product-image-container">
         <img 
-          src={product.image} 
+          src={`http://localhost:3000/uploads/${product.image}`} 
           alt={product.name} 
           className="product-image"
+          onError={(e) => {
+            e.target.src = '/src/assets/logo.png'; // Fallback image
+          }}
         />
         <div className={`product-overlay ${isHovered ? 'active' : ''}`}>
           <button className="wishlist-btn">
             <FaHeart />
           </button>
-          <button className="quick-view-btn">Quick View</button>
+          <button 
+            className="quick-view-btn"
+            onClick={() => onQuickView && onQuickView(product)}
+          >
+            Quick View
+          </button>
         </div>
         {product.stock < 5 && product.stock > 0 && (
           <span className="low-stock-badge">Only {product.stock} left!</span>
@@ -51,15 +59,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         <h3 className="product-name">{product.name}</h3>
         <p className="product-description">{product.description}</p>
         
-        <div className="product-rating">
-          {[...Array(5)].map((_, i) => (
-            <FaStar 
-              key={i} 
-              className={i < 4 ? 'star filled' : 'star'} 
-            />
-          ))}
-          <span className="rating-text">(4.0)</span>
-        </div>
+
 
         <div className="product-price">
           <span className="current-price">₹{product.price}</span>

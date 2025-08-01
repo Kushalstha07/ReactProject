@@ -88,86 +88,9 @@
   font-weight: 400;
 }
 
-/* Social Login */
-.social-login {
-  margin-bottom: 24px;
-}
 
-.social-btn {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e1e5e9;
-  border-radius: 12px;
-  background: white;
-  color: #333;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
 
-.social-btn:hover {
-  border-color: #2832C2;
-  background: #f8f9ff;
-  transform: translateY(-1px);
-}
 
-.social-row {
-  display: flex;
-  gap: 12px;
-}
-
-.social-row .social-btn {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.google-btn:hover {
-  border-color: #db4437;
-  background: #fef7f7;
-}
-
-.facebook-btn:hover {
-  border-color: #4267B2;
-  background: #f7f8ff;
-}
-
-.apple-btn:hover {
-  border-color: #000;
-  background: #f8f8f8;
-}
-
-/* Divider */
-.divider {
-  position: relative;
-  text-align: center;
-  margin: 24px 0;
-  color: #666;
-  font-size: 14px;
-}
-
-.divider::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #e1e5e9;
-  z-index: 1;
-}
-
-.divider span {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 0 16px;
-  position: relative;
-  z-index: 2;
-}
 
 /* Form Styles */
 .register-form {
@@ -385,13 +308,7 @@
     font-size: 14px;
   }
   
-  .social-row {
-    flex-direction: column;
-  }
-  
-  .social-row .social-btn {
-    margin-bottom: 12px;
-  }
+
   
   .form-input {
     padding: 12px 16px 12px 40px;

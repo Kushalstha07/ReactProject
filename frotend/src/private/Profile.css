@@ -339,6 +339,236 @@
   100% { transform: rotate(360deg); }
 }
 
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.error-message p {
+  color: #721c24;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.error-message button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.error-message button:hover {
+  background: #c82333;
+}
+
+/* Purchase History Styles */
+.purchase-history-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.order-summary-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border: 1px solid #e9ecef;
+}
+
+.order-summary-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.order-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2832C2;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.purchased-products-section {
+  margin-top: 20px;
+}
+
+.purchased-products-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-name {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+.product-description {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.product-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.product-details span {
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.quantity {
+  color: #2832C2 !important;
+  font-weight: 500;
+}
+
+.price {
+  color: #28a745 !important;
+  font-weight: 600;
+}
+
+.order-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.order-info span {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f8f9fa;
+  color: #666;
+}
+
+.order-number {
+  color: #2832C2 !important;
+  font-weight: 500;
+}
+
+.order-status {
+  color: white !important;
+  font-weight: 500;
+}
+
+.detailed-orders-section {
+  margin-top: 30px;
+}
+
+.detailed-orders-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.item-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.item-quantity, .item-size, .item-color {
+  font-size: 0.8rem;
+  color: #666;
+}
+
 @media (max-width: 768px) {
   .profile-content {
     grid-template-columns: 1fr;
@@ -363,5 +593,21 @@
     flex-direction: column;
     gap: 10px;
     align-items: flex-start;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .product-details {
+    flex-direction: column;
+  }
+
+  .order-info {
+    flex-direction: column;
   }
 } 

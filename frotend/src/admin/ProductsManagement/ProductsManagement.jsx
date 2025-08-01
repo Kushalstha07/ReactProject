@@ -220,10 +220,10 @@ const ProductsManagement = () => {
             <div key={product.id} className={`product-card ${!product.isActive ? 'inactive' : ''}`}>
               <div className="product-image">
                 <img 
-                  src={product.image} 
+                  src={`http://localhost:3000/uploads/${product.image}`} 
                   alt={product.name}
                   onError={(e) => {
-                    e.target.src = '/placeholder-image.jpg';
+                    e.target.src = '/src/assets/logo.png';
                   }}
                 />
                 <div className="product-overlay">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Register.css'; 
@@ -55,25 +55,7 @@ function Register() {
             <p className="register-subtitle">Join our cotton family today</p>
           </div>
 
-          {/* Social Login */}
-          <div className="social-login">
-            <button className="social-btn google-btn" type="button">
-              <FaGoogle />
-              <span>Continue with Google</span>
-            </button>
-            <div className="social-row">
-              <button className="social-btn facebook-btn" type="button">
-                <FaFacebook />
-              </button>
-              <button className="social-btn apple-btn" type="button">
-                <FaApple />
-              </button>
-            </div>
-          </div>
 
-          <div className="divider">
-            <span>or register with email</span>
-          </div>
 
           {/* Registration Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="register-form">

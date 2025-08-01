@@ -4,24 +4,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const createDefaultAdmin = async () => {
+const forceResetDatabase = async () => {
   try {
-    // Sync database with alter to handle schema changes
-    console.log('🔄 Syncing database...');
-    await sequelize.sync({ alter: true });
-    console.log('✅ Database synced successfully');
+    console.log('🔄 Force resetting database...');
+    console.log('⚠️  This will delete ALL data!');
     
-    // Check if admin user already exists
-    const existingAdmin = await User.findOne({ 
-      where: { 
-        email: 'admin@cottonco.com'
-      } 
-    });
-    
-    if (existingAdmin) {
-      console.log('✅ Default admin user already exists');
-      return;
-    }
+    // Force sync database to recreate all tables and types
+    await sequelize.sync({ force: true });
+    console.log('✅ Database force reset successfully');
     
     // Create default admin user
     const adminUser = await User.create({
@@ -38,9 +28,18 @@ const createDefaultAdmin = async () => {
     console.log('⚠️  Please change the password after first login!');
     
   } catch (error) {
-    console.error('❌ Error creating default admin user:', error);
+    console.error('❌ Error force resetting database:', error);
     console.error('Error details:', error.message);
+  } finally {
+    // Close the database connection
+    await sequelize.close();
+    process.exit(0);
   }
 };
 
-export { createDefaultAdmin };
+// Run the force reset if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  forceResetDatabase();
+}
+
+export { forceResetDatabase }; 

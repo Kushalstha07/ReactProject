@@ -25,6 +25,7 @@ router.delete("/products/:id", adminController.deleteProduct);
 
 // Orders management routes
 router.get("/orders", adminController.getAllOrders);
+router.get("/orders/:id", adminController.getOrderById);
 router.put("/orders/:id/status", adminController.updateOrderStatus);
 
 export { router as adminRouter };

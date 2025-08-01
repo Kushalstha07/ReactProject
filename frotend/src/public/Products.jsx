@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FaFilter, FaSort, FaTh, FaListUl } from 'react-icons/fa';
+import { FaFilter, FaSort, FaTh, FaListUl, FaSearch, FaTimes } from 'react-icons/fa';
 import ProductCard from '../components/ProductCard';
+import ProductDetail from '../components/ProductDetail';
 import { getProducts } from '../services/productApi';
 import { addToCart, isUserAuthenticated } from '../services/cartApi';
 import './Products.css';
@@ -13,6 +14,8 @@ function Products() {
   const [error, setError] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState('grid');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   // Get current filters from URL
   const category = searchParams.get('category') || '';
@@ -126,6 +129,16 @@ function Products() {
     }
   };
 
+  const handleQuickView = (product) => {
+    setSelectedProduct(product);
+    setIsDetailOpen(true);
+  };
+
+  const closeProductDetail = () => {
+    setIsDetailOpen(false);
+    setSelectedProduct(null);
+  };
+
   if (loading) {
     return (
       <div className="products-page">
@@ -158,6 +171,28 @@ function Products() {
               <span className="product-count">
                 {products.length} products found
               </span>
+            </div>
+
+            <div className="search-container">
+              <div className="search-input-wrapper">
+                <FaSearch className="search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={search}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className="search-input"
+                />
+                {search && (
+                  <button 
+                    className="clear-search-btn"
+                    onClick={() => handleSearch('')}
+                    title="Clear search"
+                  >
+                    <FaTimes />
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="controls-right">
@@ -246,11 +281,20 @@ function Products() {
                   key={product.id} 
                   product={product} 
                   onAddToCart={handleAddToCart}
+                  onQuickView={handleQuickView}
                 />
               ))}
             </div>
           )}
       </div>
+
+      {/* Product Detail Modal */}
+      <ProductDetail
+        product={selectedProduct}
+        isOpen={isDetailOpen}
+        onClose={closeProductDetail}
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 }

@@ -59,6 +59,7 @@ export const deleteProduct = (productId) => adminApi.delete(`/admin/products/${p
 
 // Orders Management API
 export const getAllOrders = (params = {}) => adminApi.get('/admin/orders', { params });
+export const getOrderById = (orderId) => adminApi.get(`/admin/orders/${orderId}`);
 export const updateOrderStatus = (orderId, status) => 
   adminApi.put(`/admin/orders/${orderId}/status`, { status });
 

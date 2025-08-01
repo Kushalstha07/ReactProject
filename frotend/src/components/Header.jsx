@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes, FaSignOutAlt, FaUserCircle, FaCog, FaUserShield } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes, FaSignOutAlt, FaUserCircle, FaCog, FaUserShield, FaTimes as FaX } from 'react-icons/fa';
 import logo from '../assets/logo.png';
 import './Header.css';
 
@@ -52,9 +52,27 @@ const Header = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      navigate(`/products?search=${encodeURIComponent(trimmedQuery)}`);
       setSearchQuery('');
+      
+      // Show a brief success message
+      const successToast = document.createElement('div');
+      successToast.className = 'success-toast';
+      successToast.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color: #28a745; font-size: 20px;">✓</span>
+          Searching for "${trimmedQuery}"...
+        </div>
+      `;
+      document.body.appendChild(successToast);
+      
+      setTimeout(() => {
+        if (document.body.contains(successToast)) {
+          document.body.removeChild(successToast);
+        }
+      }, 2000);
     }
   };
 
@@ -120,8 +138,44 @@ const Header = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !searchQuery.trim()) {
+                  e.preventDefault();
+                  // Show a message for empty search
+                  const errorToast = document.createElement('div');
+                  errorToast.className = 'error-toast';
+                  errorToast.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span style="color: #ef4444; font-size: 20px;">⚠</span>
+                      Please enter a search term
+                    </div>
+                  `;
+                  document.body.appendChild(errorToast);
+                  
+                  setTimeout(() => {
+                    if (document.body.contains(errorToast)) {
+                      document.body.removeChild(errorToast);
+                    }
+                  }, 2000);
+                }
+              }}
             />
-            <button type="submit" className="search-btn">
+            {searchQuery && (
+              <button 
+                type="button"
+                className="clear-search-btn"
+                onClick={() => setSearchQuery('')}
+                title="Clear search"
+              >
+                <FaX />
+              </button>
+            )}
+            <button 
+              type="submit" 
+              className="search-btn"
+              disabled={!searchQuery.trim()}
+              title={searchQuery.trim() ? "Search products" : "Enter a search term"}
+            >
               <FaSearch />
             </button>
           </form>
@@ -179,6 +233,22 @@ const Header = () => {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="mobile-nav">
+          {/* Mobile Search */}
+          <div className="mobile-search">
+            <form onSubmit={handleSearch} className="mobile-search-form">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="mobile-search-input"
+              />
+              <button type="submit" className="mobile-search-btn">
+                <FaSearch />
+              </button>
+            </form>
+          </div>
+          
           <Link 
             to="/" 
             className={`mobile-nav-link ${isActiveRoute('/') ? 'active' : ''}`}

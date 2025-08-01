@@ -6,12 +6,15 @@
   
   "main": "index.js",
   
-  "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "seed": "node src/scripts/seedData.js",
-    "create-admin": "node src/createAdmin.js"
-  },
+      "scripts": {
+      "start": "node src/index.js",
+      "dev": "nodemon src/index.js",
+      "seed": "node src/scripts/seedData.js",
+      "create-admin": "node src/createAdmin.js",
+      "reset-db": "node src/scripts/resetDatabase.js",
+      "force-reset-db": "node src/scripts/forceResetDatabase.js",
+      "setup-db": "node src/scripts/setupDatabase.js"
+    },
   
   "author": "",
   

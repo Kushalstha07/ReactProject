@@ -314,22 +314,69 @@ const getAllOrders = async (req, res) => {
       order: [['createdAt', 'DESC']]
     });
     
+    // Calculate pagination info
+    const totalPages = Math.ceil(count / limit);
+    
     res.status(200).json({
+      success: true,
       message: "Orders fetched successfully",
       data: {
         orders,
         pagination: {
           currentPage: page,
-          totalPages: Math.ceil(count / limit),
+          totalPages: totalPages,
           totalOrders: count,
-          hasNext: page < Math.ceil(count / limit),
+          hasNext: page < totalPages,
           hasPrev: page > 1
         }
       }
     });
   } catch (error) {
     console.error('Get orders error:', error);
-    res.status(500).json({ error: 'Failed to fetch orders' });
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to fetch orders',
+      message: error.message 
+    });
+  }
+};
+
+/**
+ * Admin Orders Management - Get single order by ID
+ */
+const getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const order = await Order.findByPk(id, {
+      include: [
+        { model: User, attributes: ['name', 'email'] },
+        {
+          model: OrderItem,
+          include: [{ model: Product }]
+        }
+      ]
+    });
+    
+    if (!order) {
+      return res.status(404).json({ 
+        success: false,
+        message: "Order not found" 
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: "Order fetched successfully",
+      data: order
+    });
+  } catch (error) {
+    console.error('Get order by ID error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to fetch order',
+      message: error.message 
+    });
   }
 };
 
@@ -343,24 +390,35 @@ const updateOrderStatus = async (req, res) => {
     
     const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ message: "Invalid status" });
+      return res.status(400).json({ 
+        success: false,
+        message: "Invalid status" 
+      });
     }
     
     const order = await Order.findByPk(id);
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ 
+        success: false,
+        message: "Order not found" 
+      });
     }
     
     order.status = status;
     await order.save();
     
     res.status(200).json({
+      success: true,
       message: "Order status updated successfully",
       data: order
     });
   } catch (error) {
     console.error('Update order status error:', error);
-    res.status(500).json({ error: 'Failed to update order status' });
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to update order status',
+      message: error.message 
+    });
   }
 };
 
@@ -374,5 +432,6 @@ export const adminController = {
   updateProduct,
   deleteProduct,
   getAllOrders,
+  getOrderById,
   updateOrderStatus
 };

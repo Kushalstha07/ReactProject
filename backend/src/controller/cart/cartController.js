@@ -1,9 +1,9 @@
-import { Cart, Product, User } from '../models/index.js';
+import { Cart, Product, User } from '../../models/index.js';
 
 // Get user's cart
 const getCart = async (req, res) => {
   try {
-    const userId = req.user.id; // From authentication middleware
+    const userId = req.user.user.id; // From authentication middleware
     
     const cartItems = await Cart.findAll({
       where: { userId },
@@ -27,7 +27,7 @@ const getCart = async (req, res) => {
 // Add item to cart
 const addToCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.user.id;
     const { productId, quantity = 1, size, color } = req.body;
 
     if (!productId) {
@@ -97,7 +97,7 @@ const addToCart = async (req, res) => {
 // Update cart item quantity
 const updateCartItem = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.user.id;
     const { id } = req.params;
     const { quantity } = req.body;
 
@@ -136,7 +136,7 @@ const updateCartItem = async (req, res) => {
 // Remove item from cart
 const removeFromCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.user.id;
     const { id } = req.params;
 
     const cartItem = await Cart.findOne({
@@ -161,7 +161,7 @@ const removeFromCart = async (req, res) => {
 // Clear entire cart
 const clearCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.user.id;
 
     await Cart.destroy({
       where: { userId }
@@ -179,7 +179,7 @@ const clearCart = async (req, res) => {
 // Get cart count
 const getCartCount = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.user.id;
     
     const count = await Cart.sum('quantity', {
       where: { userId }

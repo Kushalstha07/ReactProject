@@ -79,9 +79,8 @@ function Cart() {
       return;
     }
     
-    // Here you would typically redirect to a checkout page
-    // For now, we'll just show an alert
-    alert('Proceeding to checkout...');
+    // Navigate to checkout page
+    navigate('/checkout');
   };
 
   const continueShopping = () => {
@@ -124,7 +123,13 @@ function Cart() {
                   {cartItems.map((item) => (
                     <div key={item.id} className="cart-item">
                       <div className="item-image">
-                        <img src={`/uploads/${item.Product.image}`} alt={item.Product.name} />
+                        <img 
+                          src={`http://localhost:3000/uploads/${item.Product.image}`} 
+                          alt={item.Product.name}
+                          onError={(e) => {
+                            e.target.src = '/src/assets/logo.png'; // Fallback image
+                          }}
+                        />
                       </div>
                       
                       <div className="item-details">

@@ -9,7 +9,8 @@ import {
   FaEye,
   FaMapMarkerAlt,
   FaCreditCard,
-  FaCalendarAlt
+  FaCalendarAlt,
+  FaSync
 } from 'react-icons/fa';
 import { getAllOrders, updateOrderStatus, checkAdminAuth } from '../../services/adminApi';
 import './OrdersManagement.css';
@@ -41,6 +42,17 @@ const OrdersManagement = () => {
     fetchOrders();
   }, [navigate, currentPage, statusFilter]);
 
+  // Auto-refresh orders every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!loading) {
+        fetchOrders();
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [loading]);
+
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -51,15 +63,28 @@ const OrdersManagement = () => {
       };
       
       const response = await getAllOrders(params);
-      const { orders: orderData, pagination } = response.data.data;
       
-      setOrders(orderData);
-      setTotalPages(pagination.totalPages);
-      setTotalOrders(pagination.totalOrders);
-      setError('');
+      // Handle the response structure properly
+      if (response.data && response.data.data) {
+        const { orders: orderData, pagination } = response.data.data;
+        
+        setOrders(orderData || []);
+        setTotalPages(pagination?.totalPages || 1);
+        setTotalOrders(pagination?.totalOrders || 0);
+        setError('');
+      } else {
+        // Fallback if response structure is different
+        setOrders(response.data?.orders || response.data || []);
+        setTotalPages(1);
+        setTotalOrders(response.data?.length || 0);
+        setError('');
+      }
     } catch (error) {
       console.error('Failed to fetch orders:', error);
-      setError('Failed to load orders');
+      setError('Failed to load orders. Please try again.');
+      setOrders([]);
+      setTotalPages(1);
+      setTotalOrders(0);
     } finally {
       setLoading(false);
     }
@@ -68,12 +93,43 @@ const OrdersManagement = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await updateOrderStatus(orderId, newStatus);
+      
+      // Update the order in the local state
       setOrders(orders.map(order => 
         order.id === orderId ? { ...order, status: newStatus } : order
       ));
+      
+      // Show success message
+      const successDiv = document.createElement('div');
+      successDiv.className = 'success-toast';
+      successDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="color: #28a745; font-size: 20px;">✓</span>
+          Order status updated successfully!
+        </div>
+      `;
+      document.body.appendChild(successDiv);
+      
+      setTimeout(() => {
+        if (document.body.contains(successDiv)) {
+          document.body.removeChild(successDiv);
+        }
+      }, 3000);
+      
     } catch (error) {
       console.error('Failed to update order status:', error);
-      alert('Failed to update order status');
+      
+      // Show error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-toast';
+      errorDiv.textContent = 'Failed to update order status. Please try again.';
+      document.body.appendChild(errorDiv);
+      
+      setTimeout(() => {
+        if (document.body.contains(errorDiv)) {
+          document.body.removeChild(errorDiv);
+        }
+      }, 3000);
     }
   };
 
@@ -182,6 +238,14 @@ const OrdersManagement = () => {
         <div className="orders-stats">
           <span className="stat-item">Total Orders: <strong>{totalOrders}</strong></span>
           <span className="stat-item">Page {currentPage} of {totalPages}</span>
+          <button 
+            className="refresh-btn"
+            onClick={fetchOrders}
+            disabled={loading}
+          >
+            <FaSync className={loading ? 'spinning' : ''} />
+            Refresh
+          </button>
         </div>
       </div>
 
@@ -222,8 +286,14 @@ const OrdersManagement = () => {
                   <h4>Customer Information</h4>
                   <div className="customer-info">
                     <div className="customer-details">
-                      <strong>{order.User?.name || 'N/A'}</strong>
-                      <span className="customer-email">{order.User?.email || 'N/A'}</span>
+                      <strong>
+                        {order.User?.name || 
+                         order.customerFirstName + ' ' + order.customerLastName || 
+                         'N/A'}
+                      </strong>
+                      <span className="customer-email">
+                        {order.User?.email || order.customerEmail || 'N/A'}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -243,7 +313,10 @@ const OrdersManagement = () => {
                       <div className="detail-content">
                         <span className="detail-label">Shipping Address</span>
                         <span className="detail-value shipping-address">
-                          {order.shippingAddress}
+                          {order.shippingAddress ? 
+                            `${order.shippingAddress}, ${order.shippingCity}, ${order.shippingState} ${order.shippingZipCode}` :
+                            'Address not available'
+                          }
                         </span>
                       </div>
                     </div>

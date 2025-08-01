@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import logo from '../assets/logo.png';
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -48,11 +49,13 @@ function Login() {
         
         setTimeout(() => {
           document.body.removeChild(successDiv);
-          // Redirect admin users to admin dashboard, regular users to home
+          // Redirect admin users to admin dashboard, regular users to home or checkout
           if (userData.role === 'admin') {
             navigate('/admin');
           } else {
-            navigate('/');
+            // Check if user was redirected from checkout
+            const fromCheckout = location.state?.from === '/checkout';
+            navigate(fromCheckout ? '/checkout' : '/');
           }
           window.location.reload(); // Refresh to update header state
         }, 1500);
@@ -75,7 +78,9 @@ function Login() {
         
         setTimeout(() => {
           document.body.removeChild(successDiv);
-          navigate('/');
+          // Check if user was redirected from checkout
+          const fromCheckout = location.state?.from === '/checkout';
+          navigate(fromCheckout ? '/checkout' : '/');
           window.location.reload();
         }, 1500);
       }
@@ -187,22 +192,7 @@ function Login() {
               </button>
             </form>
 
-            {/* Social Login */}
-            <div className="social-login">
-              <div className="divider">
-                <span>Or continue with</span>
-              </div>
-              <div className="social-buttons">
-                <button className="social-btn google" type="button">
-                  <FaGoogle />
-                  <span>Google</span>
-                </button>
-                <button className="social-btn facebook" type="button">
-                  <FaFacebook />
-                  <span>Facebook</span>
-                </button>
-              </div>
-            </div>
+
 
             {/* Register Link */}
             <div className="register-link">

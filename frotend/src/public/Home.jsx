@@ -91,7 +91,13 @@ function Homepage() {
               {featuredProducts.map((product) => (
                 <div key={product.id} className="product-card-home">
                   <div className="product-image-wrapper">
-                    <img src={product.image} alt={product.name} />
+                    <img 
+                      src={`http://localhost:3000/uploads/${product.image}`} 
+                      alt={product.name}
+                      onError={(e) => {
+                        e.target.src = '/src/assets/logo.png';
+                      }}
+                    />
                     <div className="product-overlay">
                       <button className="add-to-cart-btn">
                         <FaShoppingCart /> Add to Cart
@@ -191,19 +197,7 @@ function Homepage() {
           </div>
         </section>
 
-        {/* Newsletter */}
-        <section className="newsletter-section">
-          <div className="container">
-            <div className="newsletter-content">
-              <h2>Stay Updated</h2>
-              <p>Get the latest updates on new arrivals and exclusive offers</p>
-              <div className="newsletter-form">
-                <input type="email" placeholder="Enter your email" />
-                <button>Subscribe</button>
-              </div>
-            </div>
-          </div>
-        </section>
+
       </div>
     </>
   );
