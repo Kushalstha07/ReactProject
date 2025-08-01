@@ -392,15 +392,16 @@
 
 .order-item .item-price {
   align-self: flex-end;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  color: #2c5aa0;
+  color: #2832C2;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  padding: 8px 15px;
-  border-radius: 25px;
+  padding: 6px 12px;
+  border-radius: 20px;
   border: 2px solid #dee2e6;
-  min-width: 80px;
+  min-width: 70px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .order-totals {

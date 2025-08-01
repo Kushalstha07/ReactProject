@@ -12,7 +12,6 @@ import Checkout from '../private/Checkout';
 import OrderConfirmation from '../private/OrderConfirmation';
 import OrderDetail from '../private/OrderDetail';
 import Profile from '../private/Profile';
-import TestProfile from '../private/TestProfile';
 
 // Admin Components
 import AdminDashboard from '../admin/AdminDashboard/AdminDashboard';
