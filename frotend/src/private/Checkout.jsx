@@ -9,9 +9,7 @@ import {
   FaCreditCard, 
   FaLock, 
   FaArrowLeft,
-  FaCheckCircle,
-  FaShieldAlt,
-  FaGift
+  FaCheckCircle 
 } from 'react-icons/fa';
 import { getCart, clearCart } from '../services/cartApi';
 import { createOrder } from '../services/orderApi';
@@ -24,17 +22,13 @@ function Checkout() {
   const [processing, setProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('esewa');
   const [sameAsShipping, setSameAsShipping] = useState(true);
-  const [currentStep, setCurrentStep] = useState(1);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-    trigger
-  } = useForm({
-    mode: 'onChange'
-  });
+    watch
+  } = useForm();
 
   useEffect(() => {
     // Check if user is authenticated
@@ -197,38 +191,12 @@ function Checkout() {
     }
   };
 
-  const nextStep = async () => {
-    const fieldsToValidate = getFieldsForStep(currentStep);
-    const isValid = await trigger(fieldsToValidate);
-    
-    if (isValid) {
-      setCurrentStep(prev => prev + 1);
-    }
-  };
-
-  const prevStep = () => {
-    setCurrentStep(prev => prev - 1);
-  };
-
-  const getFieldsForStep = (step) => {
-    switch (step) {
-      case 1:
-        return ['firstName', 'lastName', 'email', 'phone'];
-      case 2:
-        return ['shippingAddress', 'shippingCity', 'shippingState', 'shippingZip', 'shippingCountry'];
-      case 3:
-        return sameAsShipping ? [] : ['billingAddress', 'billingCity', 'billingState', 'billingZip', 'billingCountry'];
-      default:
-        return [];
-    }
-  };
-
   if (loading) {
     return (
       <div className="checkout-page">
         <div className="checkout-container">
           <div className="loading-spinner-container">
-            <div className="loading-spinner"></div>
+            <div className="spinner"></div>
             <p>Loading checkout...</p>
           </div>
         </div>
@@ -243,28 +211,8 @@ function Checkout() {
           <button className="back-btn" onClick={() => navigate('/cart')}>
             <FaArrowLeft /> Back to Cart
           </button>
-          <h1>Secure Checkout</h1>
-          <p>Complete your purchase safely and securely</p>
-          
-          {/* Progress Steps */}
-          <div className="progress-steps">
-            <div className={`step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
-              <div className="step-number">1</div>
-              <span>Information</span>
-            </div>
-            <div className={`step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}`}>
-              <div className="step-number">2</div>
-              <span>Shipping</span>
-            </div>
-            <div className={`step ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''}`}>
-              <div className="step-number">3</div>
-              <span>Payment</span>
-            </div>
-            <div className={`step ${currentStep >= 4 ? 'active' : ''}`}>
-              <div className="step-number">4</div>
-              <span>Review</span>
-            </div>
-          </div>
+          <h1>Checkout</h1>
+          <p>Complete your purchase</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="checkout-form">
@@ -272,183 +220,28 @@ function Checkout() {
             {/* Left Column - Forms */}
             <div className="checkout-forms">
               
-              {/* Step 1: Customer Information */}
-              {currentStep === 1 && (
-                <div className="form-section">
-                  <div className="section-header">
-                    <h2><FaUser /> Customer Information</h2>
-                    <p>We'll use this information to contact you about your order</p>
-                  </div>
-                  <div className="form-grid">
-                    <div className="input-group">
-                      <label>First Name *</label>
-                      <div className="input-wrapper">
-                        <FaUser className="input-icon" />
-                        <input
-                          type="text"
-                          className={`checkout-input ${errors.firstName ? 'error' : ''}`}
-                          placeholder="Enter first name"
-                          {...register('firstName', { 
-                            required: 'First name is required',
-                            minLength: { value: 2, message: 'First name must be at least 2 characters' }
-                          })}
-                        />
-                      </div>
-                      {errors.firstName && <span className="error-message">{errors.firstName.message}</span>}
-                    </div>
-
-                    <div className="input-group">
-                      <label>Last Name *</label>
-                      <div className="input-wrapper">
-                        <FaUser className="input-icon" />
-                        <input
-                          type="text"
-                          className={`checkout-input ${errors.lastName ? 'error' : ''}`}
-                          placeholder="Enter last name"
-                          {...register('lastName', { 
-                            required: 'Last name is required',
-                            minLength: { value: 2, message: 'Last name must be at least 2 characters' }
-                          })}
-                        />
-                      </div>
-                      {errors.lastName && <span className="error-message">{errors.lastName.message}</span>}
-                    </div>
-
-                    <div className="input-group">
-                      <label>Email Address *</label>
-                      <div className="input-wrapper">
-                        <FaEnvelope className="input-icon" />
-                        <input
-                          type="email"
-                          className={`checkout-input ${errors.email ? 'error' : ''}`}
-                          placeholder="Enter email address"
-                          {...register('email', { 
-                            required: 'Email is required',
-                            pattern: {
-                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                              message: 'Invalid email address'
-                            }
-                          })}
-                        />
-                      </div>
-                      {errors.email && <span className="error-message">{errors.email.message}</span>}
-                    </div>
-
-                    <div className="input-group">
-                      <label>Phone Number *</label>
-                      <div className="input-wrapper">
-                        <FaPhone className="input-icon" />
-                        <input
-                          type="tel"
-                          className={`checkout-input ${errors.phone ? 'error' : ''}`}
-                          placeholder="Enter phone number"
-                          {...register('phone', { 
-                            required: 'Phone number is required',
-                            pattern: {
-                              value: /^[0-9+\-\s()]+$/,
-                              message: 'Invalid phone number'
-                            }
-                          })}
-                        />
-                      </div>
-                      {errors.phone && <span className="error-message">{errors.phone.message}</span>}
-                    </div>
-                  </div>
-                  
-                  <div className="step-buttons">
-                    <button type="button" className="next-btn" onClick={nextStep}>
-                      Continue to Shipping <FaArrowLeft style={{ transform: 'rotate(180deg)' }} />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 2: Shipping Address */}
-              {currentStep === 2 && (
-                <div className="form-section">
-                  <div className="section-header">
-                    <h2><FaMapMarkerAlt /> Shipping Address</h2>
-                    <p>Where should we deliver your order?</p>
-                  </div>
-                  <div className="form-grid">
-                    <div className="input-group full-width">
-                      <label>Street Address *</label>
-                      <div className="input-wrapper">
-                        <FaMapMarkerAlt className="input-icon" />
-                        <input
-                          type="text"
-                          className={`checkout-input ${errors.shippingAddress ? 'error' : ''}`}
-                          placeholder="Enter street address"
-                          {...register('shippingAddress', { required: 'Shipping address is required' })}
-                        />
-                      </div>
-                      {errors.shippingAddress && <span className="error-message">{errors.shippingAddress.message}</span>}
-                    </div>
-
-                    <div className="input-group">
-                      <label>City *</label>
+              {/* Customer Information */}
+              <div className="form-section">
+                <h2>Customer Information</h2>
+                <div className="form-grid">
+                  <div className="input-group">
+                    <label>First Name</label>
+                    <div className="input-wrapper">
+                      <FaUser className="input-icon" />
                       <input
                         type="text"
-                        className={`checkout-input ${errors.shippingCity ? 'error' : ''}`}
-                        placeholder="Enter city"
-                        {...register('shippingCity', { required: 'City is required' })}
+                        className={`checkout-input ${errors.firstName ? 'error' : ''}`}
+                        placeholder="Enter first name"
+                        {...register('firstName', { required: 'First name is required' })}
                       />
-                      {errors.shippingCity && <span className="error-message">{errors.shippingCity.message}</span>}
                     </div>
-
-                    <div className="input-group">
-                      <label>State/Province *</label>
-                      <input
-                        type="text"
-                        className={`checkout-input ${errors.shippingState ? 'error' : ''}`}
-                        placeholder="Enter state/province"
-                        {...register('shippingState', { required: 'State/Province is required' })}
-                      />
-                      {errors.shippingState && <span className="error-message">{errors.shippingState.message}</span>}
-                    </div>
-
-                    <div className="input-group">
-                      <label>ZIP/Postal Code *</label>
-                      <input
-                        type="text"
-                        className={`checkout-input ${errors.shippingZip ? 'error' : ''}`}
-                        placeholder="Enter ZIP/postal code"
-                        {...register('shippingZip', { required: 'ZIP/Postal code is required' })}
-                      />
-                      {errors.shippingZip && <span className="error-message">{errors.shippingZip.message}</span>}
-                    </div>
-
-                    <div className="input-group">
-                      <label>Country *</label>
-                      <select
-                        className={`checkout-input ${errors.shippingCountry ? 'error' : ''}`}
-                        {...register('shippingCountry', { required: 'Country is required' })}
-                      >
-                        <option value="">Select Country</option>
-                        <option value="NP">Nepal</option>
-                        <option value="IN">India</option>
-                        <option value="BD">Bangladesh</option>
-                        <option value="LK">Sri Lanka</option>
-                        <option value="BT">Bhutan</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="UK">United Kingdom</option>
-                        <option value="AU">Australia</option>
-                      </select>
-                      {errors.shippingCountry && <span className="error-message">{errors.shippingCountry.message}</span>}
-                    </div>
+                    {errors.firstName && <span className="error-message">{errors.firstName.message}</span>}
                   </div>
-                  
-                  <div className="step-buttons">
-                    <button type="button" className="prev-btn" onClick={prevStep}>
-                      <FaArrowLeft /> Back
-                    </button>
-                    <button type="button" className="next-btn" onClick={nextStep}>
-                      Continue to Payment <FaArrowLeft style={{ transform: 'rotate(180deg)' }} />
-                    </button>
-                  </div>
-                </div>
-              )}
+
+                  <div className="input-group">
+                    <label>Last Name</label>
+                    <div className="input-wrapper">
+                      <FaUser className="input-icon" />
                       <input
                         type="text"
                         className={`checkout-input ${errors.lastName ? 'error' : ''}`}
@@ -760,14 +553,14 @@ function Checkout() {
                         />
                       </div>
                       <div className="item-details">
-                        <h4>{item.Product.name}</h4>
+                        <h4 title={item.Product.name}>{item.Product.name}</h4>
                         <p>Quantity: {item.quantity}</p>
                         {item.size && <p>Size: {item.size}</p>}
                         {item.color && <p>Color: {item.color}</p>}
                       </div>
                     </div>
                     <div className="item-price">
-                      ${(item.Product.price * item.quantity).toFixed(2)}
+                      ₹{(item.Product.price * item.quantity).toFixed(2)}
                     </div>
                   </div>
                 ))}
@@ -776,11 +569,11 @@ function Checkout() {
               <div className="order-totals">
                 <div className="total-row">
                   <span>Subtotal</span>
-                  <span>${calculateSubtotal().toFixed(2)}</span>
+                  <span>₹{calculateSubtotal().toFixed(2)}</span>
                 </div>
                 <div className="total-row">
                   <span>Shipping</span>
-                  <span>{calculateShipping() === 0 ? 'Free' : `$${calculateShipping().toFixed(2)}`}</span>
+                  <span>{calculateShipping() === 0 ? 'Free' : `₹${calculateShipping().toFixed(2)}`}</span>
                 </div>
                 <div className="total-row">
                   <span>Tax</span>
@@ -823,4 +616,3 @@ function Checkout() {
 }
 
 export default Checkout;
-  
